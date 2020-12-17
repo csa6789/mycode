@@ -246,3 +246,48 @@ void bubble_sort(vector<int>& nums , int n)
 		}
 	}
 }
+
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param airplanes: An interval array
+     * @return: Count of airplanes are in the sky.
+     */
+    
+    int countOfAirplanes(vector<Interval> &airplanes) {
+        // write your code here
+        int n = airplanes.size();
+        vector<pair<int,int>> setAirplanes(2*n);
+        
+        for(int i = 0; i<n; i++) {
+            setAirplanes[2*i].first = airplanes[i].start;
+            setAirplanes[2*i].second = 1;
+            setAirplanes[2*i+1].first = airplanes[i].end;
+            setAirplanes[2*i+1].second = 0;
+        }
+        sort(setAirplanes.begin(), setAirplanes.end(), [](pair<int,int>& a, pair<int,int>& b){
+            return a.first< b.first||(a.first==b.first&&a.second<b.second);
+        });
+        int count=0, ans=0;
+        for(int i=0; i<2*n; i++) {
+            if(setAirplanes[i].second) {
+                count++;
+            } else {
+                count--;
+            }
+            ans = max(ans, count);
+        }
+        return ans;
+    }
+};
