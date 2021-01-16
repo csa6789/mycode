@@ -291,3 +291,63 @@ public:
         return ans;
     }
 };
+
+
+//快速排序，选择
+
+int Partition(int data[], int length, int start, int end)
+{
+	if(data == nullptr|| length <= 0|| start < 0 || end >= length)
+		throw new std::exception("Invalid Parameters");
+
+	int index = RandomInRange(start, end);
+
+	Swap(&data[index], &data[end]);
+	int small = start-1;
+	for(int i = start; i < end; ++i) {
+		if(data[i] < data[end]) {
+			++small;
+			if(small != i)
+				Swap(&data[small], &data[i]);
+		}
+	}
+	++small;
+	Swap(&data[small],&data[end]);
+	return small;
+}
+
+void QuickSort(int data[], int length, int start, int end)
+{
+	if(start==end)
+		return;
+	int index = Partition(data,length,start,end);
+	if(index > start)
+		QuickSort(data, length, start, index-1);
+	if(index < end)
+		QuickSort(data, length, index+1, end);
+
+}
+
+int QuickSelect(int data[], int length, int start, int end, int k)
+{
+	if(start == end || k <1|| start+k-1>end)
+		return error;
+	int target = start + k -1 ;
+	
+	while(start < end) {
+
+		int index = Partition(data, length, start, end);
+
+		if(index == target) {
+			return data[index];
+		}
+
+		if(index < target) {
+			start = index+1;
+		} else if(index >target) {
+			end = index-1;
+		}
+		return data[start];
+
+	}
+}
